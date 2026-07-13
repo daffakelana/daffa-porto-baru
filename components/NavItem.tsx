@@ -1,0 +1,50 @@
+"use client";
+
+import { type LucideIcon } from "lucide-react";
+import Link from "next/link";
+
+interface NavItemProps {
+  href?: string;
+  children?: React.ReactNode;
+  leftIcon?: LucideIcon;
+  rightIcon?: LucideIcon;
+  className?: string;
+  onClick?: () => void;
+  size?: number;
+}
+
+export function NavItem({
+  href,
+  children,
+  leftIcon: LeftIcon,
+  rightIcon: RightIcon,
+  className,
+  onClick,
+  size
+}: NavItemProps) {
+  const baseStyles = "inline-flex items-center justify-center gap-1 label-3 transition-colors py-1 pl-2.5 pr-2 rounded-md";
+  const hoverStyles = "hover:bg-[var(--background-color-hover)]";
+  const textColor = "text-[var(--text-color-default)]";
+
+  const content = (
+    <>
+      {LeftIcon && <LeftIcon size={size ? size : 16} />}
+      {children}
+      {RightIcon && <RightIcon size={size ? size : 16} />}
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={`${baseStyles} ${hoverStyles} ${textColor} ${className}`} onClick={onClick}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button className={`${baseStyles} ${hoverStyles} ${textColor} ${className}`} onClick={onClick}>
+      {content}
+    </button>
+  );
+}
