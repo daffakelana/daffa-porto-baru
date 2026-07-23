@@ -55,8 +55,11 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed w-full py-2 border-b border-[var(--divider-color)] bg-[var(--background-color-default)]">
-        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-0">
+      <nav
+        className="fixed left-1/2 top-0 z-40 w-full max-w-[1400px] -translate-x-1/2
+                  border-b border-x border-[var(--divider-color)]
+                  bg-[var(--background-color-default)] py-2"
+      >        <div className="w-full mx-auto px-4 md:px-4">
           {/* Desktop Navbar */}
           <div className="hidden md:flex flex-row justify-between items-center">
             {/* Left Section */}

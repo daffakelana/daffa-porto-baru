@@ -4,8 +4,8 @@ import { NavItem } from "./NavItem";
 
 export default function Footer() {
   return (
-    <footer className="mt-auto w-full py-2 border-t border-[var(--divider-color)] bg-[var(--background-color-default)]">
-      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-0">
+    <footer className="mt-auto w-full py-2 border-t border-[var(--divider-color)] border-x bg-[var(--background-color-default)]">
+      <div className="min-w-full mx-auto max-w-[1400px] px-4 md:px-0" >
         <div className="flex flex-row justify-between items-center">
           <p className="label-3 pl-2.5 text-[var(--text-color-secondary)]">
             © 2026 Daffa Putra Pratama

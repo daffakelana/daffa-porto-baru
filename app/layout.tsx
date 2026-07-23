@@ -5,6 +5,7 @@ import localFont from 'next/font/local'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import AppShell from "@/components/AppShell";
 
 const sfPro = localFont({
   src: [
@@ -95,13 +96,15 @@ export default function RootLayout({
       lang="en"
       className={`${sfPro.variable} ${graphik.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[var(--background-color-default)]">
-        <LanguageProvider>
+     <body>
+      <LanguageProvider>
+        <AppShell>
           <Navbar />
           {children}
           <Footer />
-        </LanguageProvider>
-      </body>
+        </AppShell>
+      </LanguageProvider>
+     </body>
     </html>
   );
 }

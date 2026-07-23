@@ -1,74 +1,44 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useMemo } from "react";
+
 import { ProjectCard } from "@/components/ProjectCard";
 import { useLanguage } from "@/components/LanguageProvider";
-import { getHomepage } from "@/lib/api/homepage";
-import type { HomepageProject } from "@/lib/types/homepage";
+import { mapProjectCards } from "@/lib/homepage";
+import type { HomepageResponse } from "@/lib/types/homepage";
 
-export function FeaturedWork() {
-  const { language, t } = useLanguage();
+interface FeaturedWorkProps {
+  data: HomepageResponse;
+}
 
-  const [projects, setProjects] = useState<HomepageProject[]>([]);
-  const [loading, setLoading] = useState(true);
+export function FeaturedWork({ data }: FeaturedWorkProps) {
+  const { t, language } = useLanguage();
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const data = await getHomepage();
-        setProjects(data.projects);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const cards = useMemo(() => mapProjectCards(data, language), [data, language]);
 
-    load();
-  }, []);
-
-  if (loading) {
-    return null;
-  }
+  if (cards.length === 0) return null;
 
   return (
-    <section
-      id="work-section"
-      className="w-full max-w-[1200px] py-16 md:py-24"
-    >
+    <section id="work-section" className="w-full max-w-[1200px] py-16 md:py-24">
       <div className="mx-auto flex max-w-[995px] flex-col gap-16 md:gap-20">
-        {projects.map((project, index) => (
-          <Fragment key={project.id}>
+        {cards.map((card, index) => (
+          <Fragment key={card.id}>
             {index > 0 && (
-              <svg
+              <div
                 aria-hidden="true"
-                className="mx-auto w-full max-w-[790px]"
-                height="2"
-              >
-                <line
-                  x1="0"
-                  y1="1"
-                  x2="100%"
-                  y2="1"
-                  stroke="var(--divider-color)"
-                  strokeWidth="1.5"
-                  strokeDasharray="5 5"
-                />
-              </svg>
+                className="mx-auto w-full max-w-[790px] border-t border-dashed border-(--divider-color)"
+              />
             )}
 
             <ProjectCard
-              company={project.company}
-              type={language === "id" ? project.type_id : project.type_en}
-              year={String(project.year)}
-              title={language === "id" ? project.title_id : project.title_en}
-              description={
-                language === "id"
-                  ? project.description_id
-                  : project.description_en
-              }
+              company={card.company}
+              type={card.type}
+              year={card.year}
+              title={card.title}
+              description={card.description}
+              image={card.image}
+              href={card.href}
               readMoreLabel={t.work.readMore}
-              href={`/work/${project.slug}`}
             />
           </Fragment>
         ))}
@@ -76,3 +46,5 @@ export function FeaturedWork() {
     </section>
   );
 }
+
+export default FeaturedWork;

@@ -1,3 +1,11 @@
+export type ProjectBlockType =
+  | "heading"
+  | "paragraph"
+  | "image"
+  | "quote"
+  | "video"
+  | "embed";
+
 export interface ProjectBadge {
   icon: string | null;
   icon_color: string | null;
@@ -11,6 +19,7 @@ export interface ProjectMeta {
   label_id: string;
   value_en: string | null;
   value_id: string | null;
+  sort_order: number;
   badges: ProjectBadge[];
 }
 
@@ -19,12 +28,13 @@ export interface ProjectMedia {
   public_url: string;
   alt_en: string | null;
   alt_id: string | null;
+  width: number | null;
+  height: number | null;
 }
-
 
 export interface ProjectBlock {
   id: string;
-  type: "heading" | "paragraph" | "image";
+  type: ProjectBlockType;
   content_en: string | null;
   content_id: string | null;
   caption_en: string | null;
@@ -33,13 +43,13 @@ export interface ProjectBlock {
   embed_url: string | null;
   sort_order: number;
   media?: ProjectMedia | null;
-
 }
 
 export interface ProjectSection {
   id: string;
   title_en: string;
   title_id: string;
+  sort_order: number;
   blocks: ProjectBlock[];
 }
 

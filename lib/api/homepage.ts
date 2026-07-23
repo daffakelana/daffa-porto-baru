@@ -1,17 +1,14 @@
-import { createClient } from "@/lib/supabase/client";
+import { rpc } from "@/lib/supabase/rpc";
+import { DEFAULT_COLLECTION_SLUG } from "@/lib/collections";
 import type { HomepageResponse } from "@/lib/types/homepage";
 
-export async function getHomepage() {
-  const supabase = createClient();
+export async function getHomepage(
+  collectionSlug: string = DEFAULT_COLLECTION_SLUG,
+): Promise<HomepageResponse | null> {
+  const data = await rpc<"get_homepage", HomepageResponse | null>(
+    "get_homepage",
+    { p_collection_slug: collectionSlug },
+  );
 
-  const { data, error } = await supabase.rpc("get_homepage", {
-    p_collection_slug: "general",
-  });
-
-  console.log("RPC DATA:", data);
-  console.log("RPC ERROR:", error);
-
-  if (error) throw error;
-
-  return data as unknown as HomepageResponse;
+  return data?.collection ? data : null;
 }
