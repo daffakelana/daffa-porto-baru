@@ -33,6 +33,32 @@ export interface Translation {
     subtitle: string;
     cta: string;
   };
+  work: {
+    readMore: string;
+    featured: {
+      company: string;
+      type: string;
+      year: string;
+      title: string;
+      description: string;
+    };
+  };
+  status: {
+    backToHome: string;
+    notFound: {
+      title: string;
+      description: string;
+    };
+    comingSoon: {
+      title: string;
+      description: string;
+    };
+  };
+  detail: {
+    content: string;
+    collapseSidebar: string;
+    expandSidebar: string;
+  };
 }
 
 export const translations: Record<Language, Translation> = {
@@ -67,6 +93,36 @@ export const translations: Record<Language, Translation> = {
         "Crafting user-centered digital products that are simple to use, visually refined, and built to achieve business goals.",
       cta: "See My Best Work",
     },
+    work: {
+      readMore: "Read More",
+      featured: {
+        company: "Opticore",
+        type: "Web App",
+        year: "2026",
+        title:
+          "Briton StudyUK: Unlock the Potential of Studying in Great Britain",
+        description:
+          "When a broken content management platform frustrated social media managers and risked retail partner relationships.",
+      },
+    },
+    status: {
+      backToHome: "Back to Home",
+      notFound: {
+        title: "Page Not Found",
+        description:
+          "The page you're looking for doesn't exist or may have been moved.",
+      },
+      comingSoon: {
+        title: "Coming Soon",
+        description:
+          "I am working on something exciting. This page isn't available yet, but it'll be ready soon.",
+      },
+    },
+    detail: {
+      content: "Content",
+      collapseSidebar: "Collapse sidebar",
+      expandSidebar: "Expand sidebar",
+    },
   },
   id: {
     nav: {
@@ -98,6 +154,36 @@ export const translations: Record<Language, Translation> = {
       subtitle:
         "Menciptakan produk digital yang berpusat pada pengguna—mudah digunakan, rapi secara visual, dan dibuat untuk mencapai tujuan bisnis.",
       cta: "Lihat Karya Terbaik Saya",
+    },
+    work: {
+      readMore: "Selengkapnya",
+      featured: {
+        company: "Opticore",
+        type: "Aplikasi Web",
+        year: "2026",
+        title:
+          "Briton StudyUK: Membuka Potensi Belajar di Britania Raya",
+        description:
+          "Ketika platform manajemen konten yang rusak membuat manajer media sosial frustrasi dan mempertaruhkan hubungan dengan mitra ritel.",
+      },
+    },
+    status: {
+      backToHome: "Kembali ke Beranda",
+      notFound: {
+        title: "Halaman Tidak Ditemukan",
+        description:
+          "Halaman yang kamu cari tidak ada atau mungkin telah dipindahkan.",
+      },
+      comingSoon: {
+        title: "Segera Hadir",
+        description:
+          "Saya sedang menyiapkan sesuatu yang menarik. Halaman ini belum tersedia, tapi akan segera siap.",
+      },
+    },
+    detail: {
+      content: "Konten",
+      collapseSidebar: "Tutup sidebar",
+      expandSidebar: "Buka sidebar",
     },
   },
 };

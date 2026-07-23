@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Turbopack dev tidak memindai folder rute dinamis (`app/work/[slug]`) karena
+   `[` `]` adalah karakter glob, jadi utility yang hanya dipakai di sana tak
+   ter-generate. Paksa Tailwind memindai direktori ini secara eksplisit.
+   Catatan: butuh restart dev server sekali agar source baru terdaftar. */
+@source "../app";
+@source "../components";
+
 /* ======================================================
     GLOBAL TOKENS
 ====================================================== */
@@ -38,7 +45,8 @@
 
   /* Headline */
   --font-size-headline-1: 28px;
-  --font-size-headline-2: 20px;
+  --font-size-headline-2-5: 20px;
+  --font-size-headline-2: 18px;
 
   /* Label */
   --font-size-label-1: 18px;
@@ -53,7 +61,7 @@
       LETTER SPACING
   ====================================================== */
 
-  --letter-spacing-display: -0.04em;
+  --letter-spacing-display: -1.28px;
   --letter-spacing-headline: -0.04em;
 
   --letter-spacing-label: -0.01em;
@@ -71,7 +79,7 @@
     --font-size-display-3: 24px;
 
     --font-size-headline-1: 20px;
-    --font-size-headline-2: 20px;
+    /* headline-2 (18px) & headline-2-5 (20px) sama di mobile & desktop */
   }
 }
 
@@ -91,7 +99,7 @@ html[data-theme="dark"] {
   --background-color-hover: rgb(238 239 233 / 10%);
 
   /* Divider */
-  --divider-color: #4B4B4B;
+  --divider-color: #3D3D3D;
 }
 
 /* ======================================================
@@ -110,7 +118,7 @@ html[data-theme="dark"] {
 @utility display-1 {
   font-family: var(--font-graphik);
   font-size: var(--font-size-display-1);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 140%;
   letter-spacing: var(--letter-spacing-display);
 }
@@ -118,7 +126,7 @@ html[data-theme="dark"] {
 @utility display-2 {
   font-family: var(--font-graphik);
   font-size: var(--font-size-display-2);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 140%;
   letter-spacing: var(--letter-spacing-display);
 }
@@ -126,7 +134,7 @@ html[data-theme="dark"] {
 @utility display-3 {
   font-family: var(--font-graphik);
   font-size: var(--font-size-display-3);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 140%;
   letter-spacing: var(--letter-spacing-display);
 }
@@ -138,15 +146,23 @@ html[data-theme="dark"] {
 @utility headline-1 {
   font-family: var(--font-sf);
   font-size: var(--font-size-headline-1);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 140%;
+  letter-spacing: var(--letter-spacing-headline);
+}
+
+@utility headline-2-5 {
+  font-family: var(--font-sf);
+  font-size: var(--font-size-headline-2-5);
+  font-weight: 600;
+  line-height: 160%;
   letter-spacing: var(--letter-spacing-headline);
 }
 
 @utility headline-2 {
   font-family: var(--font-sf);
   font-size: var(--font-size-headline-2);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 160%;
   letter-spacing: var(--letter-spacing-headline);
 }

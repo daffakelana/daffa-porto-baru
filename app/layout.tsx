@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import localFont from 'next/font/local'
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/components/LanguageProvider";
 
 const sfPro = localFont({
@@ -98,6 +99,7 @@ export default function RootLayout({
         <LanguageProvider>
           <Navbar />
           {children}
+          <Footer />
         </LanguageProvider>
       </body>
     </html>
