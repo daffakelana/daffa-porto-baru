@@ -18,12 +18,12 @@ export default async function AdminLayout({
             <Link href="/admin" className="label-3 text-[var(--text-color-default)]">
               Projects
             </Link>
-            <span className="label-3 text-[var(--text-color-tertiary)]">
-              Collections (segera)
-            </span>
-            <span className="label-3 text-[var(--text-color-tertiary)]">
-              Media (segera)
-            </span>
+            <Link href="/admin/collections" className="label-3 text-[var(--text-color-default)]">
+            Collections
+            </Link>
+            <Link href="/admin/media" className="label-3 text-[var(--text-color-default)]">
+              Media
+            </Link>
           </nav>
           <form action={logout}>
             <button

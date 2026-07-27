@@ -34,13 +34,32 @@ function Caption({ text }: { text: string }) {
 }
 
 function ParagraphBlock({ block, language }: BlockProps) {
-  const content = contentOf(block, language);
-  if (!content) return null;
+  const html = contentOf(block, language);
+  if (!html) return null;
 
   return (
-    <p className="body-1 whitespace-pre-line text-[var(--text-color-secondary)]">
-      {content}
-    </p>
+    <div
+      className="body-1 rich-text text-[var(--text-color-secondary)]"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
+function QuoteBlock({ block, language }: BlockProps) {
+  const html = contentOf(block, language);
+  if (!html) return null;
+
+  return (
+    <figure
+      className="flex flex-col gap-2 border-l-2 pl-4"
+      style={{ borderColor: "var(--primary-base)" }}
+    >
+      <blockquote
+        className="body-1 rich-text text-[var(--text-color-default)]"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      <Caption text={captionOf(block, language)} />
+    </figure>
   );
 }
 
@@ -61,23 +80,6 @@ function ImageBlock({ block, language }: BlockProps) {
       ) : (
         <div className="h-[320px] w-full rounded-2xl bg-[var(--background-color-default)]" />
       )}
-      <Caption text={captionOf(block, language)} />
-    </figure>
-  );
-}
-
-function QuoteBlock({ block, language }: BlockProps) {
-  const content = contentOf(block, language);
-  if (!content) return null;
-
-  return (
-    <figure
-      className="flex flex-col gap-2 border-l-2 pl-4"
-      style={{ borderColor: "var(--primary-base)" }}
-    >
-      <blockquote className="body-1 text-[var(--text-color-default)]">
-        {content}
-      </blockquote>
       <Caption text={captionOf(block, language)} />
     </figure>
   );

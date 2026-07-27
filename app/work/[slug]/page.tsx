@@ -22,12 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function WorkDetailPage({ params }: Props) {
   const { slug } = await params;
-  const data = await getProject(slug);
+  console.log("SLUG:", JSON.stringify(slug));
 
-  console.log("SECTIONS:", data?.sections?.length);
-  console.dir(data?.sections?.[0], { depth: null });
+  const data = await getProject(slug);
+  console.log("HAS PROJECT:", Boolean(data?.project), "TITLE:", data?.project?.title_en);
 
   if (!data) notFound();
-
   return <ProjectDetailView data={data} />;
 }

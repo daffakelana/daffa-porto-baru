@@ -1,4 +1,13 @@
-import { Search, PenTool, type LucideIcon } from "lucide-react";
+import {
+  Search,
+  PenTool,
+  Palette,
+  Code,
+  Layers,
+  LineChart,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import type { MetaRow } from "@/components/DetailHeader";
 import type { SidebarSection, SidebarLink } from "@/components/DetailSidebar";
 import type { Language } from "@/lib/i18n";
@@ -9,8 +18,15 @@ import type {
   ProjectSection,
 } from "@/lib/types/project";
 
-const ICONS: Record<string, LucideIcon> = { PenTool, Search };
-
+const ICONS: Record<string, LucideIcon> = {
+  PenTool,
+  Search,
+  Palette,
+  Code,
+  Layers,
+  LineChart,
+  Users,
+};
 interface Sortable {
   sort_order: number | null;
 }
