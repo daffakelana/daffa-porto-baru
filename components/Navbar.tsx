@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NavItem } from "./NavItem";
 import { Moon, Sun, Menu, Languages } from "lucide-react";
@@ -34,6 +35,8 @@ export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
 
   // Sinkronisasi sekali dari localStorage setelah hydration (SSR-safe).
   useEffect(() => {
@@ -52,7 +55,8 @@ export default function Navbar() {
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
-
+  
+  if (isAdmin) return null;
   return (
     <>
       <nav

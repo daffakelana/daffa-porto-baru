@@ -1,6 +1,11 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  if (pathname.startsWith("/admin")) return <>{children}</>;
   return (
     <div className="min-h-screen w-full bg-[var(--background-color-default)] ">
       <div
