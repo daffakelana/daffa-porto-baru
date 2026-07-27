@@ -21,7 +21,6 @@ import type { FormState } from "@/lib/admin/form";
 import type { BlockType } from "@/lib/admin/blocks";
 import { RichTextInput } from "@/components/admin/RichTextInput";
 
-// ---- tipe lokal (dengan uid untuk key & dnd) ----
 interface UIBlock {
   uid: string;
   type: BlockType;
@@ -71,7 +70,6 @@ const BLOCK_LABEL: Record<BlockType, string> = {
   embed: "Embed",
 };
 
-// ============ Serialize untuk payload ============
 function serialize(sections: UISection[]) {
   return sections.map((s) => ({
     title_en: s.title_en,
@@ -100,8 +98,14 @@ function BlockCard({
   onPatch: (patch: Partial<UIBlock>) => void;
   onRemove: () => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: block.uid });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: block.uid });
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const style = {
@@ -113,80 +117,123 @@ function BlockCard({
   const chosen = media.find((m) => m.id === block.media_id) ?? null;
 
   return (
-    <div ref={setNodeRef} style={style}
-      className="flex flex-col gap-3 rounded-lg border p-3 border-[var(--divider-color)] bg-[var(--background-color-white)]">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex flex-col gap-3 rounded-lg border p-3 border-[var(--divider-color)] bg-[var(--background-color-white)]"
+    >
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2">
-          <button type="button" {...attributes} {...listeners}
+          <button
+            type="button"
+            {...attributes}
+            {...listeners}
             className="cursor-grab rounded border px-1.5 label-3 border-[var(--divider-color)] text-[var(--text-color-tertiary)]"
-            title="Seret untuk mengurutkan">⠿</button>
+            title="Seret untuk mengurutkan"
+          >
+            ⠿
+          </button>
           <span className="label-3 text-[var(--text-color-tertiary)]">
             {BLOCK_LABEL[block.type]}
           </span>
         </span>
-        <button type="button" onClick={onRemove}
-          className="rounded border px-1.5 label-3 border-red-300 text-red-600 hover:bg-red-50">×</button>
+        <button
+          type="button"
+          onClick={onRemove}
+          className="rounded border px-1.5 label-3 border-red-300 text-red-600 hover:bg-red-50"
+        >
+          ×
+        </button>
       </div>
 
-      {/* HEADING — plain, jadi anchor sidebar */}
       {block.type === "heading" && (
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-          <input className={inputClass} placeholder="Judul heading (EN)"
+          <input
+            className={inputClass}
+            placeholder="Judul heading (EN)"
             value={block.content_en ?? ""}
-            onChange={(e) => onPatch({ content_en: e.target.value })} />
-          <input className={inputClass} placeholder="Judul heading (ID)"
+            onChange={(e) => onPatch({ content_en: e.target.value })}
+          />
+          <input
+            className={inputClass}
+            placeholder="Judul heading (ID)"
             value={block.content_id ?? ""}
-            onChange={(e) => onPatch({ content_id: e.target.value })} />
+            onChange={(e) => onPatch({ content_id: e.target.value })}
+          />
         </div>
       )}
 
-      {/* PARAGRAPH / QUOTE — rich text */}
       {RICH.has(block.type) && (
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
-            <span className="label-3 text-[var(--text-color-tertiary)]">Isi (EN)</span>
-            <RichTextInput value={block.content_en ?? ""}
-              onChange={(html) => onPatch({ content_en: html })} />
+            <span className="label-3 text-[var(--text-color-tertiary)]">
+              Isi (EN)
+            </span>
+            <RichTextInput
+              value={block.content_en ?? ""}
+              onChange={(html: string) => onPatch({ content_en: html })}
+            />
           </div>
           <div className="flex flex-col gap-1">
-            <span className="label-3 text-[var(--text-color-tertiary)]">Isi (ID)</span>
-            <RichTextInput value={block.content_id ?? ""}
-              onChange={(html) => onPatch({ content_id: html })} />
+            <span className="label-3 text-[var(--text-color-tertiary)]">
+              Isi (ID)
+            </span>
+            <RichTextInput
+              value={block.content_id ?? ""}
+              onChange={(html: string) => onPatch({ content_id: html })}
+            />
           </div>
           {block.type === "quote" && (
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-              <input className={inputClass} placeholder="Atribusi (EN)"
+              <input
+                className={inputClass}
+                placeholder="Atribusi (EN)"
                 value={block.caption_en ?? ""}
-                onChange={(e) => onPatch({ caption_en: e.target.value })} />
-              <input className={inputClass} placeholder="Atribusi (ID)"
+                onChange={(e) => onPatch({ caption_en: e.target.value })}
+              />
+              <input
+                className={inputClass}
+                placeholder="Atribusi (ID)"
                 value={block.caption_id ?? ""}
-                onChange={(e) => onPatch({ caption_id: e.target.value })} />
+                onChange={(e) => onPatch({ caption_id: e.target.value })}
+              />
             </div>
           )}
         </div>
       )}
 
-      {/* IMAGE — media picker */}
       {block.type === "image" && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <div className="h-20 w-28 overflow-hidden rounded-md border border-[var(--divider-color)] bg-[var(--background-color-default)]">
               {chosen ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={chosen.public_url} alt="" className="h-full w-full object-cover" />
+                <img
+                  src={chosen.public_url}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
               ) : (
                 <div className="grid h-full w-full place-items-center label-3 text-[var(--text-color-tertiary)]">
                   Kosong
                 </div>
               )}
             </div>
-            <button type="button" onClick={() => setPickerOpen((o) => !o)}
-              className="rounded-md border px-3 py-1.5 label-3 border-[var(--divider-color)] hover:bg-[var(--background-color-hover)]">
+            <button
+              type="button"
+              onClick={() => setPickerOpen((o) => !o)}
+              className="rounded-md border px-3 py-1.5 label-3 border-[var(--divider-color)] hover:bg-[var(--background-color-hover)]"
+            >
               {pickerOpen ? "Tutup" : "Pilih gambar"}
             </button>
             {block.media_id && (
-              <button type="button" onClick={() => onPatch({ media_id: null })}
-                className="label-3 text-red-600 hover:underline">Hapus</button>
+              <button
+                type="button"
+                onClick={() => onPatch({ media_id: null })}
+                className="label-3 text-red-600 hover:underline"
+              >
+                Hapus
+              </button>
             )}
           </div>
 
@@ -198,41 +245,70 @@ function BlockCard({
                 </p>
               )}
               {media.map((m) => (
-                <button key={m.id} type="button"
-                  onClick={() => { onPatch({ media_id: m.id }); setPickerOpen(false); }}
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => {
+                    onPatch({ media_id: m.id });
+                    setPickerOpen(false);
+                  }}
                   className="aspect-square overflow-hidden rounded border-2"
-                  style={{ borderColor: block.media_id === m.id ? "var(--primary-base)" : "transparent" }}>
+                  style={{
+                    borderColor:
+                      block.media_id === m.id
+                        ? "var(--primary-base)"
+                        : "transparent",
+                  }}
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={m.public_url} alt={m.alt_en ?? ""} className="h-full w-full object-cover" />
+                  <img
+                    src={m.public_url}
+                    alt={m.alt_en ?? ""}
+                    className="h-full w-full object-cover"
+                  />
                 </button>
               ))}
             </div>
           )}
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-            <input className={inputClass} placeholder="Caption (EN)"
+            <input
+              className={inputClass}
+              placeholder="Caption (EN)"
               value={block.caption_en ?? ""}
-              onChange={(e) => onPatch({ caption_en: e.target.value })} />
-            <input className={inputClass} placeholder="Caption (ID)"
+              onChange={(e) => onPatch({ caption_en: e.target.value })}
+            />
+            <input
+              className={inputClass}
+              placeholder="Caption (ID)"
               value={block.caption_id ?? ""}
-              onChange={(e) => onPatch({ caption_id: e.target.value })} />
+              onChange={(e) => onPatch({ caption_id: e.target.value })}
+            />
           </div>
         </div>
       )}
 
-      {/* VIDEO / EMBED — URL */}
       {(block.type === "video" || block.type === "embed") && (
         <div className="flex flex-col gap-2">
-          <input className={inputClass} placeholder="URL embed (mis. https://youtube.com/embed/…)"
+          <input
+            className={inputClass}
+            placeholder="URL embed (mis. https://youtube.com/embed/…)"
             value={block.embed_url ?? ""}
-            onChange={(e) => onPatch({ embed_url: e.target.value })} />
+            onChange={(e) => onPatch({ embed_url: e.target.value })}
+          />
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-            <input className={inputClass} placeholder="Caption (EN)"
+            <input
+              className={inputClass}
+              placeholder="Caption (EN)"
               value={block.caption_en ?? ""}
-              onChange={(e) => onPatch({ caption_en: e.target.value })} />
-            <input className={inputClass} placeholder="Caption (ID)"
+              onChange={(e) => onPatch({ caption_en: e.target.value })}
+            />
+            <input
+              className={inputClass}
+              placeholder="Caption (ID)"
               value={block.caption_id ?? ""}
-              onChange={(e) => onPatch({ caption_id: e.target.value })} />
+              onChange={(e) => onPatch({ caption_id: e.target.value })}
+            />
           </div>
         </div>
       )}
@@ -247,18 +323,28 @@ function SectionCard({
   onPatch,
   onRemove,
   onBlocksReorder,
+  dragHandle,
+  collapsed,
+  onToggle,
 }: {
   section: UISection;
   media: PickerMedia[];
   onPatch: (patch: Partial<UISection>) => void;
   onRemove: () => void;
   onBlocksReorder: (blocks: UIBlock[]) => void;
+  dragHandle?: React.ReactNode;
+  collapsed: boolean;
+  onToggle: () => void;
 }) {
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+  );
 
   const patchBlock = (uidB: string, patch: Partial<UIBlock>) =>
     onPatch({
-      blocks: section.blocks.map((b) => (b.uid === uidB ? { ...b, ...patch } : b)),
+      blocks: section.blocks.map((b) =>
+        b.uid === uidB ? { ...b, ...patch } : b,
+      ),
     });
 
   const removeBlock = (uidB: string) =>
@@ -269,10 +355,14 @@ function SectionCard({
       blocks: [
         ...section.blocks,
         {
-          uid: uid(), type,
-          content_en: null, content_id: null,
-          caption_en: null, caption_id: null,
-          media_id: null, embed_url: null,
+          uid: uid(),
+          type,
+          content_en: null,
+          content_id: null,
+          caption_en: null,
+          caption_id: null,
+          media_id: null,
+          embed_url: null,
         },
       ],
     });
@@ -288,47 +378,138 @@ function SectionCard({
   return (
     <div className="flex flex-col gap-4 rounded-xl border-2 p-4 border-[var(--divider-color)] bg-[var(--background-color-default)]">
       <div className="flex items-start justify-between gap-3">
-        <div className="grid flex-1 grid-cols-1 gap-2 md:grid-cols-2">
-          <input className={inputClass} placeholder="Judul section (EN) — mis. Design Process"
-            value={section.title_en}
-            onChange={(e) => onPatch({ title_en: e.target.value })} />
-          <input className={inputClass} placeholder="Judul section (ID)"
-            value={section.title_id}
-            onChange={(e) => onPatch({ title_id: e.target.value })} />
+        <div className="flex flex-1 items-start gap-2">
+          {dragHandle}
+
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-expanded={!collapsed}
+            title={collapsed ? "Buka section" : "Tutup section"}
+            className="mt-1 grid size-8 shrink-0 place-items-center rounded border label-3 border-[var(--divider-color)] text-[var(--text-color-secondary)] hover:bg-[var(--background-color-hover)]"
+          >
+            {collapsed ? "▸" : "▾"}
+          </button>
+
+          <div className="grid flex-1 grid-cols-1 gap-2 md:grid-cols-2">
+            <input
+              className={inputClass}
+              placeholder="Judul section (EN) — mis. Design Process"
+              value={section.title_en}
+              onChange={(e) => onPatch({ title_en: e.target.value })}
+            />
+            <input
+              className={inputClass}
+              placeholder="Judul section (ID)"
+              value={section.title_id}
+              onChange={(e) => onPatch({ title_id: e.target.value })}
+            />
+          </div>
         </div>
-        <button type="button" onClick={onRemove}
-          className="shrink-0 rounded-md border px-3 py-2 label-3 border-red-300 text-red-600 hover:bg-red-50">
+        <button
+          type="button"
+          onClick={onRemove}
+          className="shrink-0 rounded-md border px-3 py-2 label-3 border-red-300 text-red-600 hover:bg-red-50"
+        >
           Hapus section
         </button>
       </div>
 
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-        <SortableContext items={section.blocks.map((b) => b.uid)} strategy={verticalListSortingStrategy}>
-          <div className="flex flex-col gap-2">
-            {section.blocks.map((b) => (
-              <BlockCard key={b.uid} block={b} media={media}
-                onPatch={(patch) => patchBlock(b.uid, patch)}
-                onRemove={() => removeBlock(b.uid)} />
+      {collapsed ? (
+        // <button
+        //   type="button"
+        //   onClick={onToggle}
+        //   className="w-fit label-3 text-[var(--text-color-tertiary)] hover:text-[var(--text-color-default)]"
+        // >
+        //   {/* {section.blocks.length} blok — klik untuk membuka */}
+        // </button>
+        <></>
+      ) : (
+        <>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={onDragEnd}
+          >
+            <SortableContext
+              items={section.blocks.map((b) => b.uid)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="flex flex-col gap-2">
+                {section.blocks.map((b) => (
+                  <BlockCard
+                    key={b.uid}
+                    block={b}
+                    media={media}
+                    onPatch={(patch) => patchBlock(b.uid, patch)}
+                    onRemove={() => removeBlock(b.uid)}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(BLOCK_LABEL) as BlockType[]).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => addBlock(t)}
+                className="rounded-md border px-2.5 py-1 label-3 border-[var(--divider-color)] text-[var(--text-color-secondary)] hover:bg-[var(--background-color-hover)]"
+              >
+                + {BLOCK_LABEL[t]}
+              </button>
             ))}
           </div>
-        </SortableContext>
-      </DndContext>
+        </>
+      )}
+    </div>
+  );
+}
 
-      <div className="flex flex-wrap gap-2">
-        {(Object.keys(BLOCK_LABEL) as BlockType[]).map((t) => (
-          <button key={t} type="button" onClick={() => addBlock(t)}
-            className="rounded-md border px-2.5 py-1 label-3 border-[var(--divider-color)] text-[var(--text-color-secondary)] hover:bg-[var(--background-color-hover)]">
-            + {BLOCK_LABEL[t]}
-          </button>
-        ))}
-      </div>
+// ============ Wrapper sortable section (handle via render prop) ============
+function SortableSection({
+  id,
+  children,
+}: {
+  id: string;
+  children: (handle: {
+    attributes: Record<string, unknown>;
+    listeners: Record<string, unknown> | undefined;
+  }) => React.ReactNode;
+}) {
+  const {
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+    attributes,
+    listeners,
+  } = useSortable({ id });
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.6 : 1,
+      }}
+    >
+      {children({
+        attributes: attributes as unknown as Record<string, unknown>,
+        listeners: listeners as unknown as Record<string, unknown> | undefined,
+      })}
     </div>
   );
 }
 
 // ============ Root ============
 export function SectionEditor({ projectId, initial, media, action }: Props) {
-  const [state, formAction, pending] = useActionState<FormState, FormData>(action, {});
+  const [state, formAction, pending] = useActionState<FormState, FormData>(
+    action,
+    {},
+  );
   const [sections, setSections] = useState<UISection[]>(() =>
     initial.map((s) => ({
       uid: uid(),
@@ -338,16 +519,48 @@ export function SectionEditor({ projectId, initial, media, action }: Props) {
     })),
   );
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+  // Set berisi uid section yang sedang TERTUTUP.
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+  );
 
   const patchSection = (uidS: string, patch: Partial<UISection>) =>
-    setSections((ss) => ss.map((s) => (s.uid === uidS ? { ...s, ...patch } : s)));
+    setSections((ss) =>
+      ss.map((s) => (s.uid === uidS ? { ...s, ...patch } : s)),
+    );
 
-  const removeSection = (uidS: string) =>
+  const removeSection = (uidS: string) => {
     setSections((ss) => ss.filter((s) => s.uid !== uidS));
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      next.delete(uidS);
+      return next;
+    });
+  };
 
   const addSection = () =>
-    setSections((ss) => [...ss, { uid: uid(), title_en: "", title_id: "", blocks: [] }]);
+    setSections((ss) => [
+      ...ss,
+      { uid: uid(), title_en: "", title_id: "", blocks: [] },
+    ]);
+
+  const toggleCollapsed = (uidS: string) =>
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(uidS)) next.delete(uidS);
+      else next.add(uidS);
+      return next;
+    });
+
+  const allCollapsed =
+    sections.length > 0 && sections.every((s) => collapsed.has(s.uid));
+
+  const setExpandAll = (expand: boolean) => {
+    if (expand) setCollapsed(new Set());
+    else setCollapsed(new Set(sections.map((s) => s.uid)));
+  };
 
   const onSectionDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
@@ -360,48 +573,106 @@ export function SectionEditor({ projectId, initial, media, action }: Props) {
   return (
     <form action={formAction} className="flex flex-col gap-6">
       <input type="hidden" name="project_id" value={projectId} />
-      <input type="hidden" name="payload" value={JSON.stringify(serialize(sections))} />
+      <input
+        type="hidden"
+        name="payload"
+        value={JSON.stringify(serialize(sections))}
+      />
 
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onSectionDragEnd}>
-        <SortableContext items={sections.map((s) => s.uid)} strategy={verticalListSortingStrategy}>
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={!allCollapsed}
+            onChange={(e) => setExpandAll(e.target.checked)}
+          />
+          <span className="label-3 text-[var(--text-color-secondary)]">
+            Expand semua
+          </span>
+        </label>
+        <span className="label-3 text-[var(--text-color-tertiary)]">
+          {sections.length} section
+        </span>
+      </div>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={onSectionDragEnd}
+      >
+        <SortableContext
+          items={sections.map((s) => s.uid)}
+          strategy={verticalListSortingStrategy}
+        >
           <div className="flex flex-col gap-6">
-            {sections.map((s) => (
-              <SortableSection key={s.uid} id={s.uid}>
-                <SectionCard section={s} media={media}
-                  onPatch={(patch) => patchSection(s.uid, patch)}
-                  onRemove={() => removeSection(s.uid)}
-                  onBlocksReorder={(blocks) => patchSection(s.uid, { blocks })} />
-              </SortableSection>
+            {sections.map((s, index) => (
+              <div key={s.uid} className="flex flex-col gap-6">
+                {index > 0 && (
+                  <div className="flex items-center gap-3" aria-hidden="true">
+                    <span className="h-px flex-1 bg-[var(--divider-color)]" />
+                    <span className="label-3 text-[var(--text-color-tertiary)]">
+                      Section {index + 1}
+                    </span>
+                    <span className="h-px flex-1 bg-[var(--divider-color)]" />
+                  </div>
+                )}
+
+                <SortableSection id={s.uid}>
+                  {({ attributes, listeners }) => (
+                    <SectionCard
+                      section={s}
+                      media={media}
+                      onPatch={(patch) => patchSection(s.uid, patch)}
+                      onRemove={() => removeSection(s.uid)}
+                      onBlocksReorder={(blocks) =>
+                        patchSection(s.uid, { blocks })
+                      }
+                      collapsed={collapsed.has(s.uid)}
+                      onToggle={() => toggleCollapsed(s.uid)}
+                      dragHandle={
+                        <button
+                          type="button"
+                          {...attributes}
+                          {...listeners}
+                          title="Seret untuk mengurutkan section"
+                          className="mt-1 cursor-grab rounded border px-2 py-1.5 label-3 border-[var(--divider-color)] text-[var(--text-color-tertiary)] hover:bg-[var(--background-color-hover)]"
+                        >
+                          ⠿
+                        </button>
+                      }
+                    />
+                  )}
+                </SortableSection>
+              </div>
             ))}
           </div>
         </SortableContext>
       </DndContext>
 
-      <button type="button" onClick={addSection}
-        className="w-fit rounded-lg border px-4 py-2 label-3 border-[var(--divider-color)] text-[var(--text-color-secondary)] hover:bg-[var(--background-color-hover)]">
+      <button
+        type="button"
+        onClick={addSection}
+        className="w-fit rounded-lg border px-4 py-2 label-3 border-[var(--divider-color)] text-[var(--text-color-secondary)] hover:bg-[var(--background-color-hover)]"
+      >
         + Tambah section
       </button>
 
       <div className="sticky bottom-4 flex items-center gap-3">
-        <button type="submit" disabled={pending}
-          className="rounded-lg bg-[var(--primary-base)] px-5 py-2.5 label-3 text-white shadow-lg transition-colors hover:bg-[var(--primary-strong)] disabled:opacity-50">
+        <button
+          type="submit"
+          disabled={pending}
+          className="rounded-lg bg-[var(--primary-base)] px-5 py-2.5 label-3 text-white shadow-lg transition-colors hover:bg-[var(--primary-strong)] disabled:opacity-50"
+        >
           {pending ? "Menyimpan…" : "Simpan semua"}
         </button>
-        {state.error && <span className="body-1 text-red-600">{state.error}</span>}
-        {state.ok && <span className="body-1 text-[var(--primary-base)]">Tersimpan.</span>}
+        {state.error && (
+          <span className="body-1 text-red-600">{state.error}</span>
+        )}
+        {state.ok && (
+          <span className="body-1 text-[var(--primary-base)]">Tersimpan.</span>
+        )}
       </div>
     </form>
-  );
-}
-
-// Wrapper agar section ikut sortable (drag lewat seluruh kartu header-nya).
-function SortableSection({ id, children }: { id: string; children: React.ReactNode }) {
-  const { setNodeRef, transform, transition, isDragging } = useSortable({ id });
-  return (
-    <div ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.6 : 1 }}>
-      {children}
-    </div>
   );
 }
 
