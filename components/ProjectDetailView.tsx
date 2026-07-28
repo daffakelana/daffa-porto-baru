@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useMemo } from "react";
-
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailHeader } from "@/components/DetailHeader";
@@ -33,6 +33,7 @@ function SectionDivider() {
 
 export function ProjectDetailView({ data }: ProjectDetailViewProps) {
   const { language } = useLanguage();
+  const [collapsed, setCollapsed] = useState(false);
 
   const meta = useMemo(() => mapMetaRows(data, language), [data, language]);
 
@@ -50,13 +51,19 @@ export function ProjectDetailView({ data }: ProjectDetailViewProps) {
     <main className="min-h-screen w-full bg-(--background-color-white) pt-12">
       <div className="flex w-full flex-col md:flex-row">
         {/* Sidebar */}
-        <aside
+         <aside
           className={cn(
-            "w-full shrink-0 md:w-[195px] md:border-r border-(--divider-color) bg-(--background-color-default)",
+            "w-full shrink-0 border-(--divider-color) bg-(--background-color-default)",
+            "transition-[width] duration-300 ease-in-out md:border-r",
+            collapsed ? "md:w-[56px]" : "md:w-[230px]",
           )}
         >
           <div className="fixed w-full border-y border-(--divider-color) bg-(--background-color-default) px-3 py-2 md:sticky md:top-[48px] md:border-b-0 md:pt-3 md:pb-8">
-            <DetailSidebar sections={sidebarSections} />
+            <DetailSidebar
+              sections={sidebarSections}
+              collapsed={collapsed}
+              onCollapsedChange={setCollapsed}
+            />
           </div>
         </aside>
 
@@ -75,20 +82,20 @@ export function ProjectDetailView({ data }: ProjectDetailViewProps) {
                 <Fragment key={section.id}>
                   {index > 0 && <SectionDivider />}
 
-                  <section
+                <section
                     id={section.id}
-                    className="flex scroll-mt-28 flex-col gap-8"
+                    className="flex scroll-mt-28 flex-col gap-10"
                   >
                     <h2 className="headline-2-5 text-[var(--text-color-tertiary)]">
                       {section.title}
                     </h2>
 
-                    <div className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-12">
                       {section.items.map((item) => (
                         <article
                           key={item.id}
                           id={item.id}
-                          className="flex scroll-mt-28 flex-col gap-6"
+                          className="flex scroll-mt-28 flex-col gap-4"
                         >
                           {item.label && (
                             <h3 className="headline-2 text-[var(--text-color-default)]">
@@ -96,13 +103,15 @@ export function ProjectDetailView({ data }: ProjectDetailViewProps) {
                             </h3>
                           )}
 
-                          {item.blocks.map((block) => (
-                            <BlockRenderer
-                              key={block.id}
-                              block={block}
-                              language={language}
-                            />
-                          ))}
+                          <div className="flex flex-col gap-5">
+                            {item.blocks.map((block) => (
+                              <BlockRenderer
+                                key={block.id}
+                                block={block}
+                                language={language}
+                              />
+                            ))}
+                          </div>
                         </article>
                       ))}
                     </div>

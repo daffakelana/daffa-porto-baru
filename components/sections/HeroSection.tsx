@@ -26,7 +26,7 @@ const heroWordConfig: Record<
   },
   webApps: {
     activeClass: "text-sky-700",
-    image: "/images/hero-image.png",
+    image: "/images/dashboard.png",
   },
   mobileApps: {
     activeClass: "text-violet-700",
@@ -114,11 +114,11 @@ export function HeroSection() {
         </div>
 
         {/* Hero Image */}
-        <div className="hero-image w-full md:w-[483px] h-[528px] flex items-center justify-center">
+        <div className="hero-image relative h-[528px] w-full  md:w-[483px]">
           <img
             src={heroImage}
             alt="Preview of Daffa's work - two mobile app designs"
-            className="w-full h-full object-contain transition-opacity duration-300"
+            className="absolute left-0 top-0 h-full w-auto max-w-none object-contain transition-opacity duration-300"
           />
         </div>
       </div>

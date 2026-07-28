@@ -5,8 +5,7 @@ import { getProjectById } from "@/lib/admin/projects";
 import { getProjectSections } from "@/lib/admin/blocks";
 import { listMedia } from "@/lib/admin/media";
 import { saveSectionsAction } from "@/lib/admin/block-actions";
-import { SectionEditor } from "@/components/admin/SectionEditor";
-
+import SectionEditorClient from "@/components/admin/SectionEditorClient";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -41,7 +40,7 @@ export default async function ProjectContentPage({ params }: Props) {
         </Link>
       </div>
 
-      <SectionEditor
+      <SectionEditorClient
         projectId={project.id}
         initial={sections.map((s) => ({
           title_en: s.title_en,

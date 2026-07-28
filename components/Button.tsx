@@ -43,7 +43,7 @@ export function Button({
 
   return (
     <button
-      className={`${baseStyles} ${variantStyles[variant]} ${disabledStyles} ${className}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${disabledStyles} ${className} cursor-pointer`}
       disabled={isDisabled}
       {...props}
     >

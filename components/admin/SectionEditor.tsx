@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import {
   DndContext,
   closestCenter,
@@ -506,6 +506,8 @@ function SortableSection({
 
 // ============ Root ============
 export function SectionEditor({ projectId, initial, media, action }: Props) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const [state, formAction, pending] = useActionState<FormState, FormData>(
     action,
     {},
@@ -569,7 +571,12 @@ export function SectionEditor({ projectId, initial, media, action }: Props) {
     const newI = sections.findIndex((s) => s.uid === over.id);
     setSections((ss) => arrayMove(ss, oldI, newI));
   };
-
+  
+  if (!mounted) {
+    return (
+      <p className="body-1 text-[var(--text-color-tertiary)]">Memuat editor…</p>
+    );
+  }
   return (
     <form action={formAction} className="flex flex-col gap-6">
       <input type="hidden" name="project_id" value={projectId} />

@@ -23,8 +23,8 @@ export function ProjectCard({
   image,
   href,
 }: ProjectCardProps) {
-  return (
-    <article className="flex flex-col md:flex-row items-stretch gap-6 md:gap-10 w-full max-w-[790px] mx-auto">
+  const CardInner = (
+    <article className="group flex flex-col md:flex-row items-stretch gap-6 md:gap-10 w-full max-w-[790px] mx-auto">
       {/* Content */}
       <div className="order-2 md:order-1 flex flex-1 flex-col justify-between gap-8">
         <div className="flex flex-col gap-4">
@@ -36,10 +36,20 @@ export function ProjectCard({
             <span className="text-[var(--text-color-tertiary)]">•</span>
             <span className="text-[var(--text-color-tertiary)]">{year}</span>
           </p>
-          
+
           <div className="title flex flex-col gap-2">
-            {/* Title */}
-            <h3 className="headline-1  text-[var(--text-color-default)]">{title}</h3>
+            {/* Title — underline menyapu kiri→kanan saat hover kartu */}
+            <h3 className="headline-1 w-fit text-[var(--text-color-default)]">
+              <span
+                className="bg-[length:0%_2px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 ease-out group-hover:bg-[length:100%_2px]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(var(--primary-base), var(--primary-base))",
+                }}
+              >
+                {title}
+              </span>
+            </h3>
 
             {/* Description */}
             <p className="body-1 text-[var(--text-color-secondary)]">
@@ -48,25 +58,43 @@ export function ProjectCard({
           </div>
         </div>
 
-        {href ? (
-          <a href={href} className="w-fit">
-            <Button>{readMoreLabel}</Button>
-          </a>
-        ) : (
-          <Button className="w-fit">{readMoreLabel}</Button>
-        )}
+        <div className="w-fit">
+          <Button>{readMoreLabel}</Button>
+        </div>
       </div>
 
-      {/* Image */}
-      <div className="order-1 md:order-2 w-full md:max-w-[380px] h-[450px] overflow-hidden rounded-2xl bg-[var(--background-color-default)]">
-        {image && (
-          <img
-            src={image}
-            alt={title}
-            className="h-full w-full object-cover"
+      {/* Image — zoom + lift + shadow + shine, semua saat hover kartu */}
+      <div className="order-1 md:order-2 w-full md:max-w-[380px] h-[450px]">
+        <div className="relative h-full w-full overflow-hidden rounded-2xl bg-[var(--background-color-default)] transition-all duration-500 ease-out group-hover:-translate-y-1 ">
+          {image && (
+            <img
+              src={image}
+              alt={title}
+              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+          )}
+
+          {/* Shine sweep */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -translate-x-full skew-x-12 transition-transform duration-700 ease-out group-hover:translate-x-full"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)",
+            }}
           />
-        )}
+        </div>
       </div>
     </article>
   );
+
+  if (href) {
+    return (
+      <a href={href} className="block">
+        {CardInner}
+      </a>
+    );
+  }
+
+  return CardInner;
 }

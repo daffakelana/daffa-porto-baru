@@ -257,16 +257,10 @@ body {
 }
 .rich-text strong { font-weight: 600; }
 .rich-text em { font-style: italic; }
-.rich-text ul,
-.rich-text ol {
-  padding-left: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-.rich-text ul { list-style: disc; }
-.rich-text ol { list-style: decimal; }
+.rich-text ul { list-style: disc; padding-left: 1.25rem; }
+.rich-text ol { list-style: decimal; padding-left: 1.25rem; }
 .rich-text p + p { margin-top: 0.75rem; }
+.rich-text span[style] { color: inherit; }
 .rich-text.ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   color: var(--text-color-tertiary);

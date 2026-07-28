@@ -36,7 +36,6 @@ function Caption({ text }: { text: string }) {
 function ParagraphBlock({ block, language }: BlockProps) {
   const html = contentOf(block, language);
   if (!html) return null;
-
   return (
     <div
       className="body-1 rich-text text-[var(--text-color-secondary)]"
@@ -75,7 +74,7 @@ function ImageBlock({ block, language }: BlockProps) {
           width={media.width ?? undefined}
           height={media.height ?? undefined}
           loading="lazy"
-          className="w-full rounded-2xl object-cover"
+          className="w-full rounded-xl border object-cover border border-[#BFBFBC]"
         />
       ) : (
         <div className="h-[320px] w-full rounded-2xl bg-[var(--background-color-default)]" />

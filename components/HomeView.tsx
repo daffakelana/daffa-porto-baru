@@ -23,7 +23,10 @@ export function HomeView({ data }: HomeViewProps) {
   const isCustom = !data.collection.is_default;
 
   return (
-    <main className="flex w-full flex-col items-center bg-(--background-color-white)">
+    <main className="flex w-full flex-col items-center bg-(--background-color-white) overflow-hidden ">
+      <div className="sub-container flex flex-col w-[1200px] border-x border-[var(--divider-color)] border-dashed">
+
+
       <HeroSection />
 
       {/* {isCustom && intro.description && (
@@ -40,6 +43,7 @@ export function HomeView({ data }: HomeViewProps) {
       )} */}
 
       <FeaturedWork data={data} />
+      </div>
     </main>
   );
 }

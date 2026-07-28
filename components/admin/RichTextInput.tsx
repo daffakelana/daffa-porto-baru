@@ -3,6 +3,8 @@
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import { TextStyle } from "@tiptap/extension-text-style";
+import { Color } from "@tiptap/extension-color";
 import { useEffect } from "react";
 
 interface Props {
@@ -44,6 +46,31 @@ function Toolbar({ editor }: { editor: Editor | null }) {
         onClick={() => editor.chain().focus().toggleOrderedList().run()}>1. List</button>
       <button type="button" className={btn(editor.isActive("link"))}
         onClick={setLink}>Link</button>
+        <span className="mx-1 h-4 w-px bg-[var(--divider-color)]" />
+
+      {[
+        { label: "Default (body)", value: null },
+        { label: "Hitam", value: "var(--text-color-default)" },
+        { label: "Primary", value: "var(--primary-base)" },
+        { label: "Merah", value: "#DC2626" },
+        { label: "Hijau", value: "#059669" },
+        { label: "Kuning", value: "#D97706" },
+      ].map((c) => (
+        <button
+          key={c.label}
+          type="button"
+          title={c.label}
+          onClick={() =>
+            c.value
+              ? editor.chain().focus().setColor(c.value).run()
+              : editor.chain().focus().unsetColor().run()
+          }
+          className="size-5 rounded-full border border-[var(--divider-color)]"
+          style={{
+            backgroundColor: c.value ?? "var(--text-color-default)",
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -53,9 +80,11 @@ export function RichTextInput({ value, onChange, placeholder }: Props) {
     extensions: [
       StarterKit.configure({ heading: false }),
       Link.configure({ openOnClick: false, autolink: false }),
+      TextStyle,
+      Color,
     ],
     content: value || "",
-    immediatelyRender: false, // penting untuk Next SSR
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class:
