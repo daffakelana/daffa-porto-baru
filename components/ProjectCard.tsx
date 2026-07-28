@@ -37,7 +37,7 @@ export function ProjectCard({
             <span className="text-[var(--text-color-tertiary)]">{year}</span>
           </p>
 
-          <div className="title flex flex-col gap-2">
+          <div className="title flex flex-col gap-2 ">
             {/* Title — underline menyapu kiri→kanan saat hover kartu */}
             <h3 className="headline-1 w-fit text-[var(--text-color-default)]">
               <span
@@ -52,7 +52,7 @@ export function ProjectCard({
             </h3>
 
             {/* Description */}
-            <p className="body-1 text-[var(--text-color-secondary)]">
+            <p className="body-1 hidden md:block text-[var(--text-color-secondary)]">
               {description}
             </p>
           </div>

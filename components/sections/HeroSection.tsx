@@ -68,7 +68,7 @@ export function HeroSection() {
   });
 
   return (
-    <section id="hero-section" className="w-full max-w-[1200px] pt-[90px] md:pt-[78px] border-b border-(--divider-color)">
+    <section id="hero-section" className="w-full max-w-[1200px] pt-[90px] md:pt-[78px] border-b border-(--divider-color) border-dashed">
       <div className="content-hero flex flex-col md:flex-row items-center gap-8 max-w-[995px] mx-auto">
         {/* Headline */}
         <div className="headline flex flex-col gap-11 w-full md:w-auto max-w-[482px]">

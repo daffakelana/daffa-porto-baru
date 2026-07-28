@@ -58,7 +58,7 @@ export function ProjectDetailView({ data }: ProjectDetailViewProps) {
             collapsed ? "md:w-[56px]" : "md:w-[230px]",
           )}
         >
-          <div className="fixed w-full border-y border-(--divider-color) bg-(--background-color-default) px-3 py-2 md:sticky md:top-[48px] md:border-b-0 md:pt-3 md:pb-8">
+          <div className="fixed min-w-full border-y border-(--divider-color) bg-(--background-color-default) px-3 py-2 md:sticky md:top-[48px] md:border-b-0 md:pt-3 md:pb-8">
             <DetailSidebar
               sections={sidebarSections}
               collapsed={collapsed}
