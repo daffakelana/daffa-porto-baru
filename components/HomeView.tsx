@@ -24,7 +24,7 @@ export function HomeView({ data }: HomeViewProps) {
 
   return (
     <main className="flex w-full flex-col items-center bg-(--background-color-white) overflow-hidden ">
-      <div className="sub-container flex flex-col md:w-[1200px] px-4 md:border-x border-[var(--divider-color)] border-dashed">
+      <div className="sub-container flex flex-col md:w-[1200px] px-4">
 
 
       <HeroSection />

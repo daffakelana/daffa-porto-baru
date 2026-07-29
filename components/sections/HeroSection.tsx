@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Wand2 } from "lucide-react";
+
 import { Button } from "@/components/Button";
+import { ButtonSecondary } from "@/components/ButtonSecondary";
 import { useLanguage } from "@/components/LanguageProvider";
 
 type HeroWordKey = "landingPages" | "webApps" | "mobileApps" | "creativeDesign";
 
-// Urutan auto-cycle. Ganti `image` per kata saat asetnya sudah siap.
+// Urutan kata yang bergantian di headline.
 const HERO_WORDS: HeroWordKey[] = [
   "landingPages",
   "webApps",
@@ -16,109 +20,89 @@ const HERO_WORDS: HeroWordKey[] = [
 
 const CYCLE_INTERVAL_MS = 2000;
 
-const heroWordConfig: Record<
-  HeroWordKey,
-  { activeClass: string; image: string }
-> = {
-  landingPages: {
-    activeClass: "text-emerald-700",
-    image: "/images/hero-image.png",
-  },
-  webApps: {
-    activeClass: "text-sky-700",
-    image: "/images/dashboard.png",
-  },
-  mobileApps: {
-    activeClass: "text-violet-700",
-    image: "/images/hero-image.png",
-  },
-  creativeDesign: {
-    activeClass: "text-amber-700",
-    image: "/images/hero-image.png",
-  },
-};
-
 export function HeroSection() {
   const { t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
     const id = setInterval(() => {
       setActiveIndex((i) => (i + 1) % HERO_WORDS.length);
     }, CYCLE_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [paused]);
+  }, []);
 
   const activeWord = HERO_WORDS[activeIndex];
-  const heroImage = heroWordConfig[activeWord].image;
-
-  const wordProps = (word: HeroWordKey) => ({
-    onMouseEnter: () => {
-      setActiveIndex(HERO_WORDS.indexOf(word));
-      setPaused(true);
-    },
-    onMouseLeave: () => setPaused(false),
-    className: `cursor-default transition-colors duration-300 ${
-      activeWord === word
-        ? `underline ${heroWordConfig[word].activeClass}`
-        : "text-[var(--text-color-tertiary)]"
-    }`,
-  });
 
   return (
-    <section id="hero-section" className="w-full max-w-[1200px] pt-[90px] md:pt-[78px] border-b border-(--divider-color) border-dashed">
-      <div className="content-hero flex flex-col md:flex-row items-center gap-8 max-w-[995px] mx-auto">
-        {/* Headline */}
-        <div className="headline flex flex-col gap-11 w-full md:w-auto max-w-[482px]">
-          <div className="flex flex-col gap-6 w-full">
+    <section
+      id="hero-section"
+      className="w-full border-b border-(--divider-color)"
+    >
+      {/* Jarak ke navbar: tinggi navbar + 96px */}
+      <div className="mx-auto w-full max-w-[1200px] px-4 pt-[calc(var(--navbar-height)+96px)] md:px-0">
+        {/* ============ HEADLINE ============ */}
+        <div className="flex flex-col items-center gap-8 text-center">
+          <div className="flex max-w-[720px] flex-col items-center gap-6">
             {/* Badge */}
             <div
-              className="inline-flex items-center gap-2 px-2 py-1 rounded w-fit"
+              className="inline-flex w-fit items-center gap-2 rounded px-2 py-1"
               style={{
                 background: "var(--background-color-default)",
-                border: "1px  solid var(--divider-color)",
+                border: "1px solid var(--divider-color)",
               }}
             >
-              <span className="label-3">
-                {t.hero.badge}
-              </span>
+              <span className="label-3">{t.hero.badge}</span>
               <img src="/images/indonesia.svg" alt="" />
             </div>
 
-            {/* Text Content */}
-            <div className="flex flex-col gap-3 font-normal">
-              <p className="display-3 text-[var(--text-color-tertiary)]">
-                {t.hero.headingIntro}{" "}
-                <span {...wordProps("landingPages")}>
-                  {t.hero.landingPages}
+            {/* Teks */}
+            <div className="flex flex-col gap-4 font-normal">
+              <h1 className="display-hero text-[var(--text-color-default)]">
+              {/* baris statis */}
+              <span className="block">{t.hero.headingIntro}</span>
+
+              {/* baris kata bergantian — tinggi selalu tetap */}
+              <span className="block overflow-hidden pb-2 -mb-2">
+                <span
+                  key={activeWord}
+                  className="inline-block underline text-[var(--primary-base)] animate-[hero-word-swipe_400ms_cubic-bezier(0.22,1,0.36,1)]"
+                >
+                  {t.hero[activeWord]}
                 </span>
-                ,{" "}
-                <span {...wordProps("webApps")}>{t.hero.webApps}</span>
-                ,{" "}
-                <span {...wordProps("mobileApps")}>{t.hero.mobileApps}</span>
-                , {t.hero.and}{" "}
-                <span {...wordProps("creativeDesign")}>
-                  {t.hero.creativeDesign}
-                </span>
-                .
-              </p>
-              <p className="body-1 text-[var(--text-color-secondary)] max-w-[482px]">
+              </span>
+              </h1>
+              <p className="body-1 mx-auto max-w-[520px] text-[var(--text-color-secondary)]">
                 {t.hero.subtitle}
               </p>
             </div>
           </div>
 
-          <Button className="w-fit">{t.hero.cta}</Button>
+          {/* ============ ACTIONS ============ */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <a href="#work-section">
+              <Button>{t.hero.cta}</Button>
+            </a>
+            <Link href="/creative-space">
+              <ButtonSecondary leftIcon={Wand2}>
+                {t.nav.creativeSpace}
+              </ButtonSecondary>
+            </Link>
+          </div>
         </div>
 
-        {/* Hero Image */}
-        <div className="hero-image relative h-[528px] w-full  md:w-[483px]">
+        {/* ============ HERO IMAGE ============ */}
+        {/* Jarak ke konten atas 86px. Padding 64px atas/kiri/kanan, bawah 0. */}
+        <div
+          className="mt-[86px] w-full rounded-t-2xl border border-b-0 px-4 pt-8 md:px-16 md:pt-16"
+          style={{
+            backgroundColor: "var(--background-color-default)",
+            borderColor: "var(--divider-color)",
+          }}
+        >
           <img
-            src={heroImage}
-            alt="Preview of Daffa's work - two mobile app designs"
-            className="absolute left-0 top-0 h-full w-auto max-w-none object-contain transition-opacity duration-300"
+            src="/images/hero-image.png"
+            alt="Preview of Daffa's work"
+            className="h-auto w-full rounded-t-xl object-cover"
           />
         </div>
       </div>

@@ -22,7 +22,7 @@
   --text-color-tertiary: rgb(21 21 21 / 70%);
 
   /* Background */
-  --background-color-default: #EEEFE9;
+  --background-color-default: #f8f8f8;
   --background-color-white: #FFFFFF;
   --background-color-hover: rgb(21 21 21 / 10%);
 
@@ -267,4 +267,33 @@ body {
   float: left;
   height: 0;
   pointer-events: none;
+}
+
+:root {
+  --navbar-height: 48px;
+}
+
+.display-hero {
+  font-size: 54px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+@media (max-width: 767px) {
+  .display-hero {
+    font-size: 36px;
+  }
+}
+
+/* animasi kata bergantian di hero */
+@keyframes hero-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
